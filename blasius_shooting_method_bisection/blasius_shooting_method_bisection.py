@@ -55,4 +55,6 @@ for i in range(0,cal_number):
 p = np.array(t)
 q = np.array(y)
 plt.plot(q,p)
+plt.xlabel("f'(η)")
+plt.ylabel("η")
 plt.show()
