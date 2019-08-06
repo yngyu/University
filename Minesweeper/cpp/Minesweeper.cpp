@@ -40,6 +40,11 @@ int main()
     char command;
     int line_dig_point,column_dig_point;
     while(true){
+        if(judge_game_clear(display_board_vector, data_board_vector, linenumber,columnnumber)){
+            display_board(display_board_vector, linenumber, columnnumber);
+            cout << "Conguratulation! Clear!" << endl;
+            break;
+        }
         display_board(display_board_vector, linenumber, columnnumber);
         cout << "sparebombnumber:";
         cout << spare_bomb_number << endl;
@@ -77,6 +82,9 @@ int main()
             if(display_board_vector.at(line_dig_point).at(column_dig_point) == 'F'){
                 cout << "there is a flag!" << endl;
                 continue;
+            }else if(display_board_vector.at(line_dig_point).at(column_dig_point) != 'o'){
+                cout << "there can't dig" << endl;
+                continue;
             }else if(data_board_vector.at(line_dig_point).at(column_dig_point) == -1){
                 display_board_vector.at(line_dig_point).at(column_dig_point) = 'x';
                 display_board(display_board_vector, linenumber, columnnumber);
@@ -96,7 +104,7 @@ int main()
                 display_board_vector.at(line_dig_point).at(column_dig_point) = 'F';
                 --spare_bomb_number;
             }
-        }else{ //command == 'c'
+        }else if(command == 'c'){
             if(display_board_vector.at(line_dig_point).at(column_dig_point) != 'F'){
                 cout << "there isn't a flag" << endl;
                 continue;
@@ -104,12 +112,8 @@ int main()
                 display_board_vector.at(line_dig_point).at(column_dig_point) = 'o';
                 ++spare_bomb_number;
             }
-        }
-        if(judge_game_clear(display_board_vector, data_board_vector, linenumber,columnnumber)){
-            display_board(display_board_vector, linenumber, columnnumber);
-            cout << "Conguratulation! Clear!" << endl;
-            break;
         }else{
+            cout << "input is incorrect" << endl;
             continue;
         }
     }
