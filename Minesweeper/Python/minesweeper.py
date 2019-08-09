@@ -24,11 +24,11 @@ def first_input_columnnumber():
             continue
 def first_input_bombnumber(linenumber,columnnumber):
     while True:
-        print("爆弾の数を入れてください")
+        print("地雷の数を入れてください")
         temp = input("")
         if temp.isdecimal() and temp[0] != "0":
             if int(temp) >= linenumber*columnnumber-8:
-                print("爆弾の数が多すぎます")
+                print("地雷の数が多すぎます")
                 continue
             else:
                 return int(temp)
@@ -206,7 +206,7 @@ while True:
         print("おめでとうございます！ゲームクリアです！")
         break
     display_board_func(display_board_array,linenumber,columnnumber)
-    print("残りの爆弾数:",end="")
+    print("残りの地雷数:",end="")
     print(sparebombnumber)
     while True:
         print("d:掘る, f;旗を立てる, c:旗を消す")
@@ -237,7 +237,7 @@ while True:
         elif data_board_array[line_dig_point][column_dig_point] == -1:
             display_board_array[line_dig_point][column_dig_point] = "x"
             display_board_func(display_board_array,linenumber,columnnumber)
-            print("残念！爆弾がありました...")
+            print("残念！地雷がありました...")
             display_bomb(display_board_array,data_board_array,linenumber,columnnumber)
             display_board_func(display_board_array,linenumber,columnnumber)
             print("GAME OVER")

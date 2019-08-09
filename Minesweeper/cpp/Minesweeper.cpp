@@ -46,7 +46,7 @@ int main()
             break;
         }
         display_board(display_board_vector, linenumber, columnnumber);
-        cout << "sparebombnumber:";
+        cout << "spare mine number:";
         cout << spare_bomb_number << endl;
         while(true){
             cout << "d:dig, f:bulid a flag, c:cancel a flag" << endl;
@@ -88,7 +88,7 @@ int main()
             }else if(data_board_vector.at(line_dig_point).at(column_dig_point) == -1){
                 display_board_vector.at(line_dig_point).at(column_dig_point) = 'x';
                 display_board(display_board_vector, linenumber, columnnumber);
-                cout << "there is bomb..." << endl;
+                cout << "there is a mine..." << endl;
                 cout << "Game Over" << endl;
                 break;
             }else if(data_board_vector.at(line_dig_point).at(column_dig_point) == 0){
@@ -139,7 +139,7 @@ int input_columnnumber()
 int input_bombnumber()
 {
     int bombnumber;
-    cout << "input number of bomn" << endl;
+    cout << "input number of mine" << endl;
     cin >> bombnumber;
     return bombnumber;
 }
