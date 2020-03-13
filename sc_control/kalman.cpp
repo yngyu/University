@@ -24,7 +24,7 @@ void estimate_value_func(vector<Vector3d, aligned_allocator<Vector3d>>& omega_st
 pair<vector<Vector3d, aligned_allocator<Vector3d>>, vector<Vector4d, aligned_allocator<Vector4d>>> Runge_kutta(const Vector3d& initial_omega, const Vector4d& initial_q, bool noise_flag); //ルンゲクッタで数値積分
 Vector3d calculate_omega_k(const Vector3d& omega, const Vector3d& noise_torque);
 double Euler_equation(const double& I_1, const double& I_2, const double& I_3, const double& omega_1, const double& omega_2, const double& noise); //omega計算
-Matrix<double, 4,3> calculate_quaternion_Matrix(Matrix<double, 4,3>& A, const Vector4d& quaternion); //クォータニオン計算
+Matrix<double, 4,3> calculate_quaternion_Matrix(const Vector4d& quaternion); //クォータニオン計算
 void update_M_matrix(Matrix<double, 7, 7>& M, Matrix<double, 3, 3>& Q, const Matrix<double, 7, 3>& Gamma, const pair<vector<Vector3d, aligned_allocator<Vector3d>>, vector<Vector4d, aligned_allocator<Vector4d>>>& value, vector<Matrix<double, 7, 7>, aligned_allocator<Matrix<double, 7, 7>>>& M_store_vector); //分散行列アップデート
 Matrix<double, 7, 7> Create_A_matrix(const Vector3d& omega, const Vector4d& quaternion);
 void store_value(pair<vector<Vector3d, aligned_allocator<Vector3d>>, vector<Vector4d, aligned_allocator<Vector4d>>>& value, vector<Vector3d, aligned_allocator<Vector3d>>& omega_store_vector, vector<Vector4d, aligned_allocator<Vector4d>>& quaternion_store_vector); //数値格納
@@ -192,28 +192,28 @@ pair<vector<Vector3d, aligned_allocator<Vector3d>>, vector<Vector4d, aligned_all
 
         Vector3d k0 = calculate_omega_k(omega, noise_torque);
         Matrix<double, 4,3> A;
-        A = calculate_quaternion_Matrix(A, quaternion);
+        A = calculate_quaternion_Matrix(quaternion);
         Vector4d l0 = A*omega/2.0*diff;
 
         Vector3d temp_omega = omega + k0/2.0;
         Vector4d temp_quaternion = quaternion + l0/2.0;
 
         Vector3d k1 = calculate_omega_k(temp_omega, noise_torque);
-        A = calculate_quaternion_Matrix(A, temp_quaternion);
+        A = calculate_quaternion_Matrix(temp_quaternion);
         Vector4d l1 = A*temp_omega/2.0*diff;
 
         temp_omega = omega + k1/2.0;
         temp_quaternion = quaternion + l1/2.0;
 
         Vector3d k2 = calculate_omega_k(temp_omega, noise_torque);
-        A = calculate_quaternion_Matrix(A, temp_quaternion);
+        A = calculate_quaternion_Matrix(temp_quaternion);
         Vector4d l2 = A*temp_omega/2.0*diff;
 
         temp_omega = omega + k2;
         temp_quaternion = quaternion + l2;
 
         Vector3d k3 = calculate_omega_k(temp_omega, noise_torque);
-        A = calculate_quaternion_Matrix(A, temp_quaternion);
+        A = calculate_quaternion_Matrix(temp_quaternion);
         Vector4d l3 = A*temp_omega/2.0*diff;
 
         Vector3d k = (k0 + 2.0*k1 + 2.0*k2 + k3)/6.0;
@@ -246,8 +246,9 @@ double Euler_equation(const double& I_1, const double& I_2, const double& I_3, c
     return k;
 }
 
-Matrix<double, 4,3> calculate_quaternion_Matrix(Matrix<double, 4,3>& A, const Vector4d& quaternion)
+Matrix<double, 4,3> calculate_quaternion_Matrix(const Vector4d& quaternion)
 {
+    Matrix<double, 4,3> A;
     A << -quaternion(1), -quaternion(2), -quaternion(3),
         quaternion(0), -quaternion(3), quaternion(2),
         quaternion(3), quaternion(0), -quaternion(1),
